@@ -1,5 +1,5 @@
-import 'package:ecommerce_jam_tangan/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_jam_tangan/splash_screen.dart'; // Pastikan path sesuai dengan struktur folder Anda.
 
 void main() {
   runApp(const MyApp());
