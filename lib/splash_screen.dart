@@ -58,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 ),
               ),
               child: const Text(
-                'Ecommerce Jam Tangan',
+                'Irfan Bool',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
