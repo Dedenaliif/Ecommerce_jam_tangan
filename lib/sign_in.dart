@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ecommerce_jam_tangan/sign_up.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -8,16 +9,16 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-
-TextEditingController _emailAddressController = TextEditingController();
-TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailAddressController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
-        if(!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null){
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
           currentFocus.focusedChild?.unfocus();
         }
       },
@@ -30,62 +31,61 @@ TextEditingController _passwordController = TextEditingController();
             children: [
               const Text(
                 'Login',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 10)
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Please sign in to continue.',
-                style: const TextStyle(fontSize: 20,Colors.grey,
+                style: TextStyle(fontSize: 20, color: Colors.grey),
               ),
-              const SizedBox(height: 40)
+              const SizedBox(height: 40),
               TextFormField(
                 controller: _emailAddressController,
-                style: TextStyle(color: color.black, fontFamily: 'SFUIDisplay'),
-                decoration: InputDecoration(
+                style: const TextStyle(
+                    color: Colors.black, fontFamily: 'SFUIDisplay'),
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   labelText: 'EMAIL',
-                  prefixIcon: Icon(icons.email_outlined),
-                  labelStyle: const TextStyle(fontSize: 12),
+                  prefixIcon: Icon(Icons.email_outlined),
+                  labelStyle: TextStyle(fontSize: 12),
                 ),
-              )
+              ),
               const SizedBox(height: 10),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                style: TextStyle(color: color.black, fontFamily: 'SFUIDisplay'),
-                decoration: InputDecoration(
+                style: const TextStyle(
+                    color: Colors.black, fontFamily: 'SFUIDisplay'),
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   labelText: 'PASSWORD',
-                  prefixIcon: Icon(icons.lock_outlined),
-                  suffixIcon: TextButton(
-                    onPressed: (){},
-                    child: Text(
-                      'FORGOT', 
-                      style: TextStyle(color: colors.green),
-                    ),
-                  ),
-                  labelStyle: const TextStyle(fontSize: 12),
+                  prefixIcon: Icon(Icons.lock_outlined),
+                  labelStyle: TextStyle(fontSize: 12),
                 ),
-              )
+              ),
               const SizedBox(height: 10),
               Align(
-                alignment: Aligment,centerRight,
+                alignment: Alignment.centerRight,
                 child: SizedBox(
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: (){},
+                    onPressed: () {
+                      // Tambahkan logika login di sini
+                      // Misalnya, validasi atau navigasi ke halaman lain
+                      print("Login clicked!");
+                    },
                     style: ElevatedButton.styleFrom(
-                      primary; Colors.green,
+                      backgroundColor: Colors.green,
                       shape: RoundedRectangleBorder(
-                        borderRadius; borderRadius.circular(30.0)
-                      )
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('Login'),
-                        const SizedBox(width: 5),
-                        Icon(Icon.arrow_forward,size: 24.0)
+                      children: const [
+                        Text('Login'),
+                        SizedBox(width: 5),
+                        Icon(Icons.arrow_forward, size: 24.0)
                       ],
                     ),
                   ),
@@ -96,21 +96,33 @@ TextEditingController _passwordController = TextEditingController();
         ),
         bottomNavigationBar: SizedBox(
           height: 60,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              "Dont have an account?"
-               style: TextStyle(fontFamily: 'SFUIDisplay', color: colors.black, fontSize: 15),
-               ),
-               TextButton(
-                onPressed: (){}, 
-                child: Text(
-                  'Sign Up', 
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Don't have an account?",
+                style: TextStyle(
+                    fontFamily: 'SFUIDisplay',
+                    color: Colors.black,
+                    fontSize: 15),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const SignUp()),
+                  );
+                },
+                child: const Text(
+                  'Sign Up',
                   style: TextStyle(
                     fontFamily: 'SFUIDisplay',
-                    color: colors,green,
-                    fontSize: 15),
-                    ))
-          ],),
+                    color: Colors.green,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
