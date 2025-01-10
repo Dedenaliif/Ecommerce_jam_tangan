@@ -1,3 +1,5 @@
+import 'package:ecommerce_jam_tangan/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_jam_tangan/sign_up.dart';
 
@@ -70,9 +72,10 @@ class _SignInState extends State<SignIn> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Tambahkan logika login di sini
-                      // Misalnya, validasi atau navigasi ke halaman lain
-                      print("Login clicked!");
+                      FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailAddressController.text, password: _passwordController.text).
+                      then((value) => {
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()))
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,

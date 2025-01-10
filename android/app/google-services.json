@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "862620032923",
+    "project_id": "login-edd54",
+    "storage_bucket": "login-edd54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862620032923:android:97b2cbb60ed98b6c4bcb3e",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_jam_tangan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-_N_TdavPIxiBNF47NVnvx2Npc7pDWYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
