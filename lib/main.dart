@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_jam_tangan/splash_screen.dart'; // Pastikan path sesuai dengan struktur folder Anda.
+import 'package:ecommerce_jam_tangan/splash_screen.dart'; // Adjust path accordingly.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Periksa apakah Firebase sudah diinisialisasi
+  // Initialize Firebase
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -21,7 +21,6 @@ void main() async {
 
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

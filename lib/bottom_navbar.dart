@@ -1,9 +1,8 @@
-import 'package:ecommerce_jam_tangan/food.dart';
-import 'package:ecommerce_jam_tangan/home_screen.dart';
-import 'package:ecommerce_jam_tangan/my_account.dart';
-import 'package:ecommerce_jam_tangan/my_cart.dart';
-import 'package:ecommerce_jam_tangan/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:ecommerce_jam_tangan/home_screen.dart';
+import 'package:ecommerce_jam_tangan/my_cart.dart';
+import 'package:ecommerce_jam_tangan/my_account.dart';
+import 'package:ecommerce_jam_tangan/splash_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
   final int initialIndex;
@@ -14,7 +13,6 @@ class BottomNavbar extends StatefulWidget {
 }
 
 class _BottomNavbarState extends State<BottomNavbar> {
-
   var _selectedIndex = 0;
 
   @override
@@ -29,16 +27,16 @@ class _BottomNavbarState extends State<BottomNavbar> {
     });
     switch (index) {
       case 0:
-        navigateToRoute(context, '/home', HomeScreen());
+        navigateToRoute(context, '/home', const HomeScreen());
         break;
       case 1:
-        navigateToRoute(context, '/mycart', MyCart());
+        navigateToRoute(context, '/mycart', const MyCart());
         break;
       case 2:
-        navigateToRoute(context, '/myaccount', MyAccount());
+        navigateToRoute(context, '/myaccount', const MyAccount());
         break;
       case 3:
-        navigateToRoute(context, '/logout', SplashScreen());
+        navigateToRoute(context, '/logout', const SplashScreen());
         break;
     }
   }
@@ -54,7 +52,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         context,
         MaterialPageRoute(
           builder: (context) => screen,
-          settings : RouteSettings(name: routeName),
+          settings: RouteSettings(name: routeName),
         ),
       );
     }
@@ -63,41 +61,30 @@ class _BottomNavbarState extends State<BottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex : _selectedIndex,
+      currentIndex: _selectedIndex,
       type: BottomNavigationBarType.fixed,
       onTap: _onItemTapped,
       backgroundColor: Colors.white,
       selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.black, 
-      items : <BottomNavigationBarItem> [
-      BottomNavigationBarItem(
-        icon: Icon(
-          Icons.home_outlined,
-          color: _selectedIndex == 0 ? Colors.green : Colors.black,
+      unselectedItemColor: Colors.black,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
         ),
-        label: 'Home'
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(
-        Icons.food_bank_outlined,
-        color: _selectedIndex == 1 ? Colors.green : Colors.black,
+        BottomNavigationBarItem(
+          icon: Icon(Icons.food_bank_outlined),
+          label: 'My Cart',
         ),
-        label: 'My Cart'
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(
-          Icons.person_2_outlined,
-          color: _selectedIndex == 2 ? Colors.green : Colors.black,
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_2_outlined),
+          label: 'My Account',
         ),
-        label: 'My Account'
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(
-          Icons.logout,
-          color: _selectedIndex == 3 ? Colors.green : Colors.black,
+        BottomNavigationBarItem(
+          icon: Icon(Icons.logout),
+          label: 'Logout',
         ),
-        label: 'Logout'
-      )
-    ]);
+      ],
+    );
   }
 }

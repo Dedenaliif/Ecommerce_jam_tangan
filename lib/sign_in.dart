@@ -97,36 +97,6 @@ class _SignInState extends State<SignIn> {
             ],
           ),
         ),
-        bottomNavigationBar: SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Don't have an account?",
-                style: TextStyle(
-                    fontFamily: 'SFUIDisplay',
-                    color: Colors.black,
-                    fontSize: 15),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const SignUp()),
-                  );
-                },
-                child: const Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontFamily: 'SFUIDisplay',
-                    color: Colors.green,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

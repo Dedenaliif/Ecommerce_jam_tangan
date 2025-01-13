@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_jam_tangan/login_screen.dart'; // Pastikan import LoginScreen sesuai dengan path Anda.
+import 'package:ecommerce_jam_tangan/login_screen.dart'; // Ensure path is correct.
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,14 +16,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   void initState() {
     super.initState();
 
-    // Inisialisasi animasi
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );
     _animationController.forward();
 
-    // Timer untuk navigasi ke LoginScreen setelah 3 detik
     Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,

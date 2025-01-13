@@ -1,77 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:ecommerce_jam_tangan/custom_scaffold.dart';
 import 'package:ecommerce_jam_tangan/sign_in.dart';
 import 'package:ecommerce_jam_tangan/sign_up.dart';
-import 'package:ecommerce_jam_tangan/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('images/background.jpg'),
-            fit: BoxFit.cover,
-            colorFilter:
-                ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.darken),
+    return CustomScaffold(
+      body: SingleChildScrollView( // Membungkus konten dalam SingleChildScrollView untuk bisa digulir
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height, // Memastikan konten memenuhi tinggi layar
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: const AssetImage('images/background.jpg'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.darken),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Memastikan kolom terpusat secara vertikal
+            children: [
+              const SizedBox(height: 100), // Jarak atas untuk logo
+              Image.asset(
+                'images/logo.jpg',
+                height: 175,
+              ),
+              const SizedBox(height: 50), // Jarak antara logo dan tombol
+              
+              // Tombol Sign Up
+              Button(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const SignUp()),
+                  );
+                },
+                text: 'SIGN UP',
+              ),
+              const SizedBox(height: 45), // Spasi antar tombol
+
+              // Tombol Sign In
+              Button(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const SignIn()),
+                  );
+                },
+                text: 'SIGN IN',
+              ),
+              const SizedBox(height: 50), // Spasi bawah agar tidak terlalu rapat
+            ],
           ),
         ),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(5, 120, 5, 20),
-            ),
-            Image.asset(
-              'images/logo.jpg',
-              height: 175,
-            ),
-            const SizedBox(height: 100),
-            Button(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const SignUp()),
-                );
-              },
-              text: 'SIGN UP',
-            ),
-            const SizedBox(height: 45),
-            Button(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const SignIn()),
-                );
-              },
-              text: 'SIGN IN',
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30, right: 20),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const HomeScreen()),
-                    );
-                  },
-                  child: const Text(
-                    'Skip',
-                    style: TextStyle(
-                      color: Colors.yellow,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
+      showBottomNavbar: false, // Hilangkan BottomNavbar di halaman login
     );
   }
 }
@@ -100,7 +84,7 @@ class Button extends StatelessWidget {
           ),
         ),
         child: Text(
-          text, // Menggunakan teks dinamis
+          text,
           style: const TextStyle(
             color: Color.fromARGB(255, 94, 92, 92),
           ),
