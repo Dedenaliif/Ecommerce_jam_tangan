@@ -8,7 +8,7 @@ class CustomScaffold extends StatelessWidget {
   const CustomScaffold({
     super.key,
     required this.body,
-    this.showBottomNavbar = false,
+    this.showBottomNavbar = true,
     this.initialIndex = 0
   });
 

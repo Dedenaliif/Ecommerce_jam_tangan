@@ -1,4 +1,5 @@
 import 'package:ecommerce_jam_tangan/custom_scaffold.dart';
+import 'package:ecommerce_jam_tangan/product_detail.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,18 +16,38 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     cardItems = [
-      CardItem(title: 'Casio - G-Shock Seri 2100', pricing: 'Rp. 2.450.000', images: 'images/watch1.jpg'),
-      CardItem(title: 'Fossil - Defender Solar-Powered Stainless Steel Watch', pricing: 'Rp. 3.945.000', images: 'images/watch2.jpg'),
-      CardItem(title: 'Seiko - SNE573', pricing: 'Rp. 5.200.000', images: 'images/watch3.jpg'),
-      CardItem(title: ' Alba - Mechanical AL4537X1', pricing: 'Rp. 1.560.000', images: 'images/watch4.jpg'),
-      CardItem(title: 'Daniel Wellington - Elan Green Malachite Lumine Rose Gold', pricing: 'Rp. 2.690.000', images: 'images/watch5.jpg')
+      CardItem(
+        title: 'Casio - G-Shock Seri 2100',
+        pricing: 'Rp. 2.450.000',
+        images: ['images/watch1.jpg'],
+      ),
+      CardItem(
+        title: 'Fossil - Defender Solar-Powered Stainless Steel Watch',
+        pricing: 'Rp. 3.945.000',
+        images: ['images/watch2.jpg'],
+      ),
+      CardItem(
+        title: 'Seiko - SNE573',
+        pricing: 'Rp. 5.200.000',
+        images: ['images/watch3.jpg'],
+      ),
+      CardItem(
+        title: 'Alba - Mechanical AL4537X1',
+        pricing: 'Rp. 1.560.000',
+        images: ['images/watch4.jpg'],
+      ),
+      CardItem(
+        title: 'Daniel Wellington - Elan Green Malachite Lumine Rose Gold',
+        pricing: 'Rp. 2.690.000',
+        images: ['images/watch5.jpg'],
+      ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body : SafeArea(
+      body: SafeArea(
         child: Column(
           children: [
             Container(
@@ -50,22 +71,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     IconButton(
-                    onPressed: () {}, 
-                    icon: Icon(Icons.filter_list),
-                    )
+                      onPressed: () {},
+                      icon: Icon(Icons.filter_list),
+                    ),
                   ],
                 ),
               ),
             ),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: cardItems.map((cardItem){
-                  return buildCard(cardItem);
-                }).toList(),
-              )
+              child: GridView.builder(
+                padding: EdgeInsets.all(8.0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                  childAspectRatio: 3 / 4, // Adjust aspect ratio for alignment
+                ),
+                itemCount: cardItems.length,
+                itemBuilder: (context, index) {
+                  return buildCard(cardItems[index]);
+                },
+              ),
             ),
           ],
         ),
@@ -73,47 +99,64 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildCard(CardItem cardItem){
-    return Card(
-      child: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: PageView.builder(
-              itemBuilder : (context, index) {
-                return Image.asset(
-                  cardItem.images[index],
-                  fit: BoxFit.cover,
-                );
-              }
-            ),
-          ),
-          ListTile(
-            title: Text(
-              cardItem.title,
-              style: TextStyle(color: Colors.black),
-            ),
-            subtitle: Text(cardItem.pricing),
-            trailing: Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(8.0),
+  Widget buildCard(CardItem cardItem) {
+    return GestureDetector(
+      onTap: () async {
+        await Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetail()));
+      },
+      child: Card(
+        elevation: 4.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Image.asset(
+                cardItem.images[0], // Use the first image
+                fit: BoxFit.cover,
               ),
-              child: Text('Premium',
-              style: TextStyle(color: Colors.white),),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    cardItem.title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    cardItem.pricing,
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+                  SizedBox(height: 8.0),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Text(
+                      'Premium',
+                      style: TextStyle(color: Colors.white, fontSize: 12.0),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-
 }
 
-class CardItem{
+class CardItem {
   final String title;
   final String pricing;
-  final String images;
+  final List<String> images;
 
   CardItem({required this.title, required this.pricing, required this.images});
 }
