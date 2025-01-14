@@ -2,6 +2,13 @@ import 'package:ecommerce_jam_tangan/custom_scaffold.dart';
 import 'package:ecommerce_jam_tangan/models/product.dart';
 import 'package:ecommerce_jam_tangan/product_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+// Fungsi untuk format harga dalam Rupiah
+String formatRupiah(double harga) {
+  final NumberFormat currencyFormatter = NumberFormat.simpleCurrency(locale: 'id_ID');
+  return currencyFormatter.format(harga);
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,31 +30,31 @@ class _HomeScreenState extends State<HomeScreen> {
     products = [
       Product(
         title: 'Casio - G-Shock Seri 2100',
-        pricing: 'Rp. 2.450.000',
+        pricing: 2450000,
         images: ['images/watch1.jpg'],
         description: 'Jam tangan Casio G-Shock dengan desain kokoh.',
       ),
       Product(
         title: 'Fossil - Defender Solar-Powered Stainless Steel Watch',
-        pricing: 'Rp. 3.945.000',
+        pricing: 3945000,
         images: ['images/watch2.jpg'],
         description: 'Jam tangan dengan tenaga surya dan material stainless steel.',
       ),
       Product(
         title: 'Seiko - SNE573',
-        pricing: 'Rp. 5.200.000',
+        pricing: 5200000,
         images: ['images/watch3.jpg'],
         description: 'Jam tangan Seiko dengan desain elegan dan daya tahan lama.',
       ),
       Product(
         title: 'Alba - Mechanical AL4537X1',
-        pricing: 'Rp. 1.560.000',
+        pricing: 1560000,
         images: ['images/watch4.jpg'],
         description: 'Jam tangan Alba dengan mesin mekanik yang presisi.',
       ),
       Product(
         title: 'Daniel Wellington - Elan Green Malachite Lumine Rose Gold',
-        pricing: 'Rp. 2.690.000',
+        pricing: 2690000,
         images: ['images/watch5.jpg'],
         description: 'Jam tangan Daniel Wellington dengan desain klasik yang elegan.',
       ),
@@ -161,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 4.0),
                   // Menampilkan harga produk
                   Text(
-                    product.pricing,
+                    formatRupiah(product.pricing),
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                   const SizedBox(height: 8.0),

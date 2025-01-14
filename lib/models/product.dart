@@ -1,7 +1,7 @@
 // File: lib/models/product.dart
 class Product {
   final String title;
-  final String pricing;
+  final double pricing;
   final List<String> images;
   final String description;
 
@@ -27,7 +27,7 @@ class Product {
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
       title: map['title'] ?? '',
-      pricing: map['pricing'] ?? '',
+      pricing: double.tryParse(map['pricing'].toString()) ?? 0.0, // Pastikan pricing adalah double
       images: List<String>.from(map['images'] ?? []),
       description: map['description'] ?? '',
     );
