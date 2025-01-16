@@ -1,11 +1,14 @@
+import 'package:ecommerce_jam_tangan/my_account.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_jam_tangan/splash_screen.dart'; // Adjust path accordingly.
+import 'package:ecommerce_jam_tangan/splash_screen.dart'; // Sesuaikan dengan path SplashScreen Anda
+import 'package:ecommerce_jam_tangan/history_page.dart'; // Halaman Riwayat
+import 'package:ecommerce_jam_tangan/history_detail_page.dart'; // Halaman Detail Riwayat
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Firebase
+
+  // Inisialisasi Firebase
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -27,9 +30,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      initialRoute: '/', // Halaman pertama yang akan ditampilkan setelah splash
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/history': (context) => HistoryPage(),
+        '/myaccount' : (context) => MyAccount() 
+        // '/historyDetail': (context) => HistoryDetailPage(orderCode: 'HRSP-1'), // Sesuaikan dengan orderCode yang ingin ditampilkan
+      },
     );
   }
 }

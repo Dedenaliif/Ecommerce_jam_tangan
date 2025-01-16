@@ -22,7 +22,12 @@ class _MyCartState extends State<MyCart> {
 
   // Fungsi untuk menambah quantity
   Future<void> _increaseQuantity(String productId, int quantity) async {
-    await _firestore.collection('carts').doc(_auth.currentUser?.uid).collection('items').doc(productId).update({
+    await _firestore
+        .collection('carts')
+        .doc(_auth.currentUser?.uid)
+        .collection('items')
+        .doc(productId)
+        .update({
       'quantity': quantity + 1,
     });
   }
@@ -30,7 +35,12 @@ class _MyCartState extends State<MyCart> {
   // Fungsi untuk mengurangi quantity
   Future<void> _decreaseQuantity(String productId, int quantity) async {
     if (quantity > 1) {
-      await _firestore.collection('carts').doc(_auth.currentUser?.uid).collection('items').doc(productId).update({
+      await _firestore
+          .collection('carts')
+          .doc(_auth.currentUser?.uid)
+          .collection('items')
+          .doc(productId)
+          .update({
         'quantity': quantity - 1,
       });
     }
@@ -38,7 +48,118 @@ class _MyCartState extends State<MyCart> {
 
   // Fungsi untuk menghapus item
   Future<void> _removeItem(String productId) async {
-    await _firestore.collection('carts').doc(_auth.currentUser?.uid).collection('items').doc(productId).delete();
+    await _firestore
+        .collection('carts')
+        .doc(_auth.currentUser?.uid)
+        .collection('items')
+        .doc(productId)
+        .delete();
+  }
+
+  // Fungsi untuk checkout dan generate orderCode
+  Future<void> _checkout() async {
+    try {
+      var userId = _auth.currentUser?.uid;
+      if (userId == null) {
+        // Jika tidak ada pengguna yang login, tampilkan pesan kesalahan
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Anda harus login terlebih dahulu.')),
+        );
+        return;
+      }
+
+      // Ambil data pengguna untuk memastikan apakah alamat dan nomor telepon sudah terisi
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(userId).get();
+
+      // Cek apakah alamat dan nomor telepon sudah diisi
+      if (userDoc.exists) {
+        String? address = userDoc['address'];
+        String? phone = userDoc['phone'];
+
+        // Validasi jika alamat atau nomor telepon kosong
+        if (address == null || phone == null || address.isEmpty || phone.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Silakan lengkapi alamat dan nomor telepon Anda di halaman Akun')),
+          );
+          Navigator.pushNamed(context, '/myaccount');  // Arahkan ke halaman MyAccount
+          return;
+        }
+      } else {
+        // Jika dokumen pengguna tidak ditemukan, tampilkan pesan kesalahan
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Data pengguna tidak ditemukan.')),
+        );
+        return;
+      }
+
+      var cartRef = _firestore.collection('carts').doc(userId).collection('items');
+      var historyRef = _firestore.collection('history').doc(userId).collection('orders');
+
+      // Ambil semua item dari keranjang
+      var cartItems = await cartRef.get();
+
+      if (cartItems.docs.isEmpty) {
+        // Keranjang kosong
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Keranjang Anda kosong.')),
+        );
+        return;
+      }
+
+      // Hitung total harga
+      int totalPrice = 0;
+      List<Map<String, dynamic>> products = [];
+
+      for (var item in cartItems.docs) {
+        int price = item['pricing'];
+        int quantity = item['quantity'];
+        totalPrice += price * quantity;
+
+        // Simpan produk ke dalam list
+        products.add({
+          'productName': item['title'],
+          'price': price,
+          'quantity': quantity,
+          'image': item['image'],
+        });
+      }
+
+      // Generate order code
+      var lastOrderQuery = await historyRef.orderBy('orderCode', descending: true).limit(1).get();
+      int nextOrderNumber = 1; // Default order number if no previous orders exist
+
+      if (lastOrderQuery.docs.isNotEmpty) {
+        String lastOrderCode = lastOrderQuery.docs.first['orderCode'];
+        nextOrderNumber = int.parse(lastOrderCode.split('-')[1]) + 1;
+      }
+
+      String orderCode = 'HRSP-$nextOrderNumber';
+
+      // Simpan ke Firestore
+      await historyRef.add({
+        'orderCode': orderCode,
+        'orderDate': Timestamp.now(),
+        'totalPrice': totalPrice,
+        'products': products, // Simpan semua produk sebagai array
+      });
+
+      // Hapus item dari keranjang setelah checkout
+      for (var doc in cartItems.docs) {
+        await doc.reference.delete();
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Pesanan berhasil dibuat dengan kode $orderCode.')),
+      );
+
+      // Arahkan pengguna ke halaman History
+      Navigator.pushNamed(context, '/history');
+    } catch (e) {
+      print('Checkout Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Terjadi kesalahan saat checkout: $e')),
+      );
+    }
   }
 
   @override
@@ -59,7 +180,7 @@ class _MyCartState extends State<MyCart> {
           double totalPrice = 0.0;
 
           for (var item in cartItems) {
-            totalPrice += (item['pricing'] as double) * (item['quantity'] as int);
+            totalPrice += (item['pricing'] as int) * (item['quantity'] as int);
           }
 
           return Column(
@@ -115,19 +236,17 @@ class _MyCartState extends State<MyCart> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Function to go to the checkout page
-                  },
+                  onPressed: _checkout, // Checkout function
                   child: const Text('Checkout'),
                 ),
               ),
-              SizedBox(height: 16),  // Add space between the button and the bottom navbar
+              SizedBox(height: 16), // Add space between the button and the bottom navbar
             ],
           );
         },
       ),
       showBottomNavbar: true,
-      initialIndex: 1,  // MyCart is at index 1
+      initialIndex: 1, // MyCart is at index 1
     );
   }
 }
